@@ -26,11 +26,12 @@ const cache = new InMemoryCache({
 });
 
 const client = new ApolloClient({
-  uri: 'https://berry-project-manager.herokuapp.com/graphql',
+  uri: `${process.env.REACT_APP_GRAPHQL_URI}/graphql`,
   cache,
 });
 
 function App() {
+  console.log(process.env.REACT_APP_GRAPHQL_URI);
   return (
     <>
       <ApolloProvider client={client}>
