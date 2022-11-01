@@ -1,0 +1,39 @@
+import React from 'react';
+import { FaTrash } from 'react-icons/fa';
+import { useMutation } from '@apollo/client';
+import { DELETE_CLIENT } from '../mutations/clientMutations';
+import { GET_CLIENTS } from '../queries/clientQueries';
+import { GET_PROJECTS } from '../queries/projectQueries';
+
+//* Update cache by using the data from the result of 'deleteClient' mutation
+//* We get the info from the result of 'GetClients' query and use it to update the cache
+//* We use the 'id' of the client we want to delete to filter out the client we want to delete from the cache
+const ClientRow = ({ client }) => {
+  const [deleteClient] = useMutation(DELETE_CLIENT, {
+    variables: { id: client.id },
+    refetchQueries: [{ query: GET_CLIENTS }, { query: GET_PROJECTS }],
+    //* We were updating cache manually before, but now we are using 'refetchQueries' instead
+    // update(cache, { data: { deleteClient } }) {
+    //   const { clients } = cache.readQuery({ query: GET_CLIENTS });
+    //   cache.writeQuery({
+    //     query: GET_CLIENTS,
+    //     data: { clients: clients.filter((c) => c.id !== deleteClient.id) },
+    //   });
+    // },
+  });
+
+  return (
+    <tr>
+      <td>{client.name}</td>
+      <td>{client.email}</td>
+      <td>{client.phone}</td>
+      <td>
+        <button className="btn btn-danger btn-sm" onClick={deleteClient}>
+          <FaTrash />
+        </button>
+      </td>
+    </tr>
+  );
+};
+
+export default ClientRow;
