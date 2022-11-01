@@ -31,7 +31,6 @@ const client = new ApolloClient({
 });
 
 function App() {
-  console.log(process.env.REACT_APP_GRAPHQL_URI);
   return (
     <>
       <ApolloProvider client={client}>
